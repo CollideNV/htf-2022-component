@@ -1,11 +1,12 @@
 {
   "name": "htf-2022-component",
   "version": "0.0.0",
+  "main": "./dist/htf/bundle.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --output-hashing none && ng run htf:build-webpack",
-    "watch": "ng build --watch --configuration development",
+    "build": "ng build htf --output-hashing none && ng run htf:build-webpack",
+    "watch": "ng build htf --watch --configuration development",
     "test": "ng test",
     "test:prod": "ng test --browsers=ChromeHeadless --watch=false"
   },
