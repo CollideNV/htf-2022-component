@@ -10,6 +10,12 @@
       "sourceRoot": "projects/htf/src",
       "prefix": "htf",
       "architect": {
+        "build-webpack": {
+          "builder": "@angular-devkit/build-webpack:webpack",
+          "options": {
+            "webpackConfig": "webpack.config.js"
+          }
+        },
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
