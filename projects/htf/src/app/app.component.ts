@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+
 import { SpellService } from './spell.service';
 
 @Component({
@@ -25,7 +27,10 @@ export class AppComponent {
     this.activeSpell = id;
   }
 
-  castSpell(spell: any) {
-    this.spellService.castSpell(spell, this.answer || '');
+  async castSpell(spell: any) {
+    const response = await firstValueFrom(
+      this.spellService.castSpell(spell, this.answer || '')
+    );
+    if (response.effective) spell.name = response.name;
   }
 }
