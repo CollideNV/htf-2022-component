@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { of, switchMap } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SpellService {
   url: string = '';
-  bewireUrl: string = 'htf.bewire.org';
+  bewireUrl: string = 'https://htf.bewire.org';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -19,12 +19,13 @@ export class SpellService {
 
   castSpell(spell: any, formula: string) {
     let answer = of(formula);
-    if (this.url) answer = this.solveChallenge(spell)
+    if (this.url) answer = this.solveChallenge(spell);
     return answer.pipe(
       switchMap((response) => {
-        return this.httpClient.post(
+        const params = new HttpParams().set('formula', response);
+        return this.httpClient.post<{ effective: boolean; name: string }>(
           this.bewireUrl + '/cast/' + spell.id,
-          response
+          params
         );
       })
     );
