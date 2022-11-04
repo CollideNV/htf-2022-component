@@ -28,9 +28,13 @@ export class AppComponent {
   }
 
   async castSpell(spell: any) {
-    const response = await firstValueFrom(
-      this.spellService.castSpell(spell, this.answer || '')
-    );
-    if (response.effective) spell.name = response.name;
+    try {
+      const response = await firstValueFrom(
+        this.spellService.castSpell(spell, this.answer || '')
+      );
+      if (response.effective) spell.name = response.name;
+    } catch(e) {
+      console.error(e);
+    }
   }
 }
