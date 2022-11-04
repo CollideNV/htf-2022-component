@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { of, switchMap } from 'rxjs';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { concatMap, map, mergeMap, of, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -8,13 +8,16 @@ import { of, switchMap } from 'rxjs';
 export class SpellService {
   url: string = '';
   bewireUrl: string = 'https://htf.bewire.org';
+  headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private httpClient: HttpClient) {}
 
   solveChallenge(spell: any) {
-    return this.httpClient.post<string>(this.url + '/' + spell.endpoint, {
-      ingredients: spell.ingredients,
-    });
+    return this.httpClient.post(
+      this.url + '/' + spell.id,
+      spell.ingredients,
+      { responseType: 'text', headers: this.headers }
+    );
   }
 
   castSpell(spell: any, formula: string) {
