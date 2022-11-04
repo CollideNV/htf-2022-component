@@ -3,7 +3,8 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { firstValueFrom } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
+import { firstValueFrom, of } from 'rxjs';
 
 import { SpellService } from './spell.service';
 
@@ -50,4 +51,37 @@ describe('SpellService', () => {
     expect(req.request.method).toEqual('POST');
     expect(await response).toEqual(expected);
   });
+
+  it('should cast spell with challenge response successfully', async () => {
+    const answer = 'answer';
+    const body = new HttpParams().set('formula', answer);
+    service.url = 'localhost:8080';
+    spyOn(service, 'solveChallenge').and.returnValue(of(answer));
+    const expected = {
+      effective: true,
+      name: 'Metelojinx'
+    }
+    const response = firstValueFrom(service.castSpell(spell, ''));
+    const req = httpTestingController.expectOne(service.bewireUrl + '/cast/' + spell.id);
+    req.flush(expected);
+    expect(req.request.body).toEqual(body);
+    expect(req.request.method).toEqual('POST');
+    expect(await response).toEqual(expected);
+    expect(service.solveChallenge).toHaveBeenCalledWith(spell);
+  }, 1)
+
+  it('should cast spell with typed answer successfully', async () => {
+    const answer = 'answer';
+    const body = new HttpParams().set('formula', answer);
+    const expected = {
+      effective: true,
+      name: 'Metelojinx'
+    }
+    const response = firstValueFrom(service.castSpell(spell, answer));
+    const req = httpTestingController.expectOne(service.bewireUrl + '/cast/' + spell.id);
+    req.flush(expected);
+    expect(req.request.body).toEqual(body);
+    expect(req.request.method).toEqual('POST');
+    expect(await response).toEqual(expected);
+  }, 1)
 });
