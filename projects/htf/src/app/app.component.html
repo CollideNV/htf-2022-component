@@ -23,8 +23,8 @@
           <div class="difficulty">{{ spell.difficulty }}</div>
           <div *ngIf="activeSpell == spell.id">
             <input class="answer" *ngIf="!url" [(ngModel)]="answer" />
-            <div class="endpoint" *ngIf="url">{{spell.endpoint}}</div>
-            <button (click)="castSpell(spell)">Cast Spell</button>
+            <div>{{spell.id}}</div>
+            <button (click)="castSpell(spell);$event.stopPropagation()">Cast Spell</button>
           </div>
         </div>
       </li>
