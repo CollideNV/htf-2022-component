@@ -11,6 +11,7 @@ import { SpellService } from './spell.service';
 export class AppComponent {
   activeSpell?: string;
   answer?: string;
+  private _quest: any;
 
   @Input() set url(value: string) {
     this.spellService.url = value;
@@ -18,7 +19,14 @@ export class AppComponent {
   get url() {
     return this.spellService.url;
   }
-  @Input() quest?: any;
+
+  @Input() set quest(value: any) {
+    if (typeof value == "string") this._quest = JSON.parse(value);
+    else this._quest = value;
+  }
+  get quest() {
+    return this._quest;
+  }
 
   constructor(private spellService: SpellService) {}
 
