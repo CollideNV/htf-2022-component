@@ -28,7 +28,8 @@ describe('SpellService', () => {
       ingredients: '1676',
       remainingAttempts: '1',
       difficulty: 10,
-      solved: null
+      solved: null,
+      type: "DECODE"
     };
   });
 
@@ -44,7 +45,7 @@ describe('SpellService', () => {
     const expected = 'testresponse';
     const response = firstValueFrom(service.solveChallenge(spell));
     const req = httpTestingController.expectOne(
-      service.url + '/' + spell.id
+      service.url + '/' + spell.type
     );
     req.flush(expected);
     expect(req.request.method).toEqual('POST');

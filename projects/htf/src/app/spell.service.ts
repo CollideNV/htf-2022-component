@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { concatMap, map, mergeMap, of, switchMap } from 'rxjs';
+import { of, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +14,8 @@ export class SpellService {
 
   solveChallenge(spell: any) {
     return this.httpClient.post(
-      this.url + '/' + spell.id,
-      spell.ingredients,
+      this.url + '/' + spell.type,
+      { ingredients: spell.ingredients },
       { responseType: 'text', headers: this.headers }
     );
   }
