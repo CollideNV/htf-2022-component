@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { SpellService } from './spell.service';
+import { ToolService } from './tool.service';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AppComponent],
-      providers: [{ provide: SpellService, useValue: {} }],
+      providers: [{ provide: ToolService, useValue: {} }],
     }).compileComponents();
   });
 
