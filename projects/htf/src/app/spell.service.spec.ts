@@ -6,20 +6,20 @@ import {
 import { HttpParams } from '@angular/common/http';
 import { firstValueFrom, of } from 'rxjs';
 
-import { ToolService } from './tool.service';
+import { SpellService } from './spell.service';
 
-describe('ToolService', () => {
-  let service: ToolService;
+describe('SpellService', () => {
+  let service: SpellService;
   let httpTestingController: HttpTestingController;
-  let tool: any;
+  let spell: any;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(ToolService);
+    service = TestBed.inject(SpellService);
     httpTestingController = TestBed.inject(HttpTestingController);
-    tool = {
+    spell = {
       id: 'f740a20a-fc11-444b-9ebd-5e60294a1f60',
       name: 'UNKNOWN',
       effect: 'Creates a small, localised thunderstorm within an area.',
@@ -40,18 +40,18 @@ describe('ToolService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should send request to team api to solve tool challenge', async () => {
+  it('should send request to team api to solve spell challenge', async () => {
     const expected = 'testresponse';
-    const response = firstValueFrom(service.solveChallenge(tool));
+    const response = firstValueFrom(service.solveChallenge(spell));
     const req = httpTestingController.expectOne(
-      service.url + '/' + tool.id
+      service.url + '/' + spell.id
     );
     req.flush(expected);
     expect(req.request.method).toEqual('POST');
     expect(await response).toEqual(expected);
   });
 
-  it('should use tool with challenge response successfully', async () => {
+  it('should cast spell with challenge response successfully', async () => {
     const answer = 'answer';
     const body = new HttpParams().set('formula', answer);
     service.url = 'localhost:8080';
@@ -60,24 +60,24 @@ describe('ToolService', () => {
       effective: true,
       name: 'Metelojinx'
     }
-    const response = firstValueFrom(service.useTool(tool, ''));
-    const req = httpTestingController.expectOne(service.collideUrl + '/use/' + tool.id);
+    const response = firstValueFrom(service.castSpell(spell, ''));
+    const req = httpTestingController.expectOne(service.bewireUrl + '/cast/' + spell.id);
     req.flush(expected);
     expect(req.request.body).toEqual(body);
     expect(req.request.method).toEqual('POST');
     expect(await response).toEqual(expected);
-    expect(service.solveChallenge).toHaveBeenCalledWith(tool);
+    expect(service.solveChallenge).toHaveBeenCalledWith(spell);
   }, 1)
 
-  it('should use tool with typed answer successfully', async () => {
+  it('should cast spell with typed answer successfully', async () => {
     const answer = 'answer';
     const body = new HttpParams().set('formula', answer);
     const expected = {
       effective: true,
       name: 'Metelojinx'
     }
-    const response = firstValueFrom(service.useTool(tool, answer));
-    const req = httpTestingController.expectOne(service.collideUrl + '/use/' + tool.id);
+    const response = firstValueFrom(service.castSpell(spell, answer));
+    const req = httpTestingController.expectOne(service.bewireUrl + '/cast/' + spell.id);
     req.flush(expected);
     expect(req.request.body).toEqual(body);
     expect(req.request.method).toEqual('POST');

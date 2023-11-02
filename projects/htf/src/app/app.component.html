@@ -8,23 +8,23 @@
     <p class="description">{{ problem.description }}</p>
     <ol>
       <li
-        *ngFor="let tool of problem.tools"
-        [ngClass]="{ solved: tool.solved }"
-        (click)="activate(tool.id)"
-        [ngClass]="{ active: activeTool == tool.id }"
-        class="tool"
+        *ngFor="let spell of problem.spells"
+        [ngClass]="{ solved: spell.solved }"
+        (click)="activate(spell.id)"
+        [ngClass]="{ active: activeSpell == spell.id }"
+        class="spell"
       >
-        <h2 class="tool-name">{{ tool.name }}</h2>
-        <p class="effect">{{ tool.effect }}</p>
+        <h2 class="spell-name">{{ spell.name }}</h2>
+        <p class="effect">{{ spell.effect }}</p>
         <div class="challenge">
-          <p class="recipe">{{ tool.recipe }}</p>
-          <p class="ingredients">{{ tool.ingredients }}</p>
-          <div class="remainingAttempts">{{ tool.remainingAttempts }}</div>
-          <div class="difficulty">{{ tool.difficulty }}</div>
-          <div *ngIf="activeTool == tool.id">
+          <p class="recipe">{{ spell.recipe }}</p>
+          <p class="ingredients">{{ spell.ingredients }}</p>
+          <div class="remainingAttempts">{{ spell.remainingAttempts }}</div>
+          <div class="difficulty">{{ spell.difficulty }}</div>
+          <div *ngIf="activeSpell == spell.id">
             <input class="answer" *ngIf="!url" [(ngModel)]="answer" />
-            <div>{{tool.id}}</div>
-            <button (click)="useTool(tool);$event.stopPropagation()">Use Tool</button>
+            <div>{{spell.id}}</div>
+            <button (click)="castSpell(spell);$event.stopPropagation()">Cast Spell</button>
           </div>
         </div>
       </li>

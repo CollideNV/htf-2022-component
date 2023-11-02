@@ -16,7 +16,7 @@ export class AppModule {
   constructor(private injector: Injector) {}
   ngDoBootstrap() {
     customElements.define(
-      'htf-2023',
+      'htf-2022',
       createCustomElement(AppComponent, { injector: this.injector })
     );
   }

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
-import { ToolService } from './tool.service';
+import { SpellService } from './spell.service';
 
 @Component({
   selector: 'htf-root',
@@ -9,15 +9,15 @@ import { ToolService } from './tool.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  activeTool?: string;
+  activeSpell?: string;
   answer?: string;
   private _quest: any;
 
   @Input() set url(value: string) {
-    this.toolService.url = value;
+    this.spellService.url = value;
   }
   get url() {
-    return this.toolService.url;
+    return this.spellService.url;
   }
 
   @Input() set quest(value: any) {
@@ -28,19 +28,19 @@ export class AppComponent {
     return this._quest;
   }
 
-  constructor(private toolService: ToolService) {}
+  constructor(private spellService: SpellService) {}
 
   activate(id: string) {
     this.answer = '';
-    this.activeTool = id;
+    this.activeSpell = id;
   }
 
-  async useTool(tool: any) {
+  async castSpell(spell: any) {
     try {
       const response = await firstValueFrom(
-        this.toolService.useTool(tool, this.answer || '')
+        this.spellService.castSpell(spell, this.answer || '')
       );
-      if (response.effective) tool.name = response.name;
+      if (response.effective) spell.name = response.name;
     } catch(e) {
       console.error(e);
     }

@@ -5,29 +5,29 @@ import { concatMap, map, mergeMap, of, switchMap } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class ToolService {
+export class SpellService {
   url: string = '';
-  collideUrl: string = 'https://htf.collide.be';
+  bewireUrl: string = 'https://htf.bewire.org';
   headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private httpClient: HttpClient) {}
 
-  solveChallenge(tool: any) {
+  solveChallenge(spell: any) {
     return this.httpClient.post(
-      this.url + '/' + tool.id,
-      tool.ingredients,
+      this.url + '/' + spell.id,
+      spell.ingredients,
       { responseType: 'text', headers: this.headers }
     );
   }
 
-  useTool(tool: any, formula: string) {
+  castSpell(spell: any, formula: string) {
     let answer = of(formula);
-    if (this.url) answer = this.solveChallenge(tool);
+    if (this.url) answer = this.solveChallenge(spell);
     return answer.pipe(
       switchMap((response) => {
         const params = new HttpParams().set('formula', response);
         return this.httpClient.post<{ effective: boolean; name: string }>(
-          this.collideUrl + '/use/' + tool.id,
+          this.bewireUrl + '/cast/' + spell.id,
           params
         );
       })
